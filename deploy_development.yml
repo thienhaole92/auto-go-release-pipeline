@@ -1,0 +1,16 @@
+---
+- hosts: app
+  tasks:
+    - name: Include auto-go-app configuration
+      include_vars:
+        file: ./environments/development/auto-go-app.yml
+        name: auto_go_app
+
+    - import_role:
+        name: development
+
+    - name: Verify Docker Compose configuration
+      ansible.builtin.command: "docker compose -f {{ docker_dir }}/docker-compose.yml config"
+      changed_when: false
+      register: compose_validation
+      failed_when: compose_validation.rc != 0

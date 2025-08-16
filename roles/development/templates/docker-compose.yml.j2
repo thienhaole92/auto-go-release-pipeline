@@ -1,0 +1,9 @@
+services:
+  auto-go-app:
+    platform: linux/amd64
+    image: thienhaole92/auto-go-app:${AUTO_GO_APP_VERSION:-latest}
+    pull_policy: always
+    ports:
+      - {{auto_go_app.http_server_port}}:{{auto_go_app.http_server_port}}
+    env_file:
+      - ./envs/auto-go-app/.env

@@ -1,0 +1,4 @@
+#SPDX-License-Identifier: MIT-0
+---
+graceful_shutdown_period: '30s'
+log_level: 'debug'

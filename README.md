@@ -1,0 +1,1 @@
+# auto-go-release-pipeline
