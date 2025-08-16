@@ -6,6 +6,11 @@
         file: ./environments/development/auto-go-app.yml
         name: auto_go_app
 
+    - name: Include hello-world configuration
+      include_vars:
+        file: ./environments/development/hello-world.yml
+        name: hello_world
+
     - import_role:
         name: development
 

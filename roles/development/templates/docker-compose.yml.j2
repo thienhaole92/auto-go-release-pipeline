@@ -7,3 +7,9 @@ services:
       - {{auto_go_app.http_server_port}}:{{auto_go_app.http_server_port}}
     env_file:
       - ./envs/auto-go-app/.env
+  hello-world:
+    platform: linux/amd64
+    image: hello-world:latest
+    pull_policy: always
+    env_file:
+      - ./envs/hello-world/.env
