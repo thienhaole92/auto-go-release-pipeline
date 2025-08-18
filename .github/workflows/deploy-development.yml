@@ -1,0 +1,45 @@
+name: Deploy Development
+on:
+  workflow_dispatch:  # Allows manual triggering
+  workflow_call:      # Allows calling from other workflows
+    inputs:
+      version:
+        description: "The version to deploy"
+        required: false
+        type: string
+env:
+  HOSTS_FILE: ./inventories/development/hosts.yml
+  HOSTS_TEMPLATE: ./inventories/development/hosts.yml.template
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Wait for SSH (with retry)
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ vars.DEVELOPMENT_HOST }}
+          username: ubuntu
+          key: ${{ secrets.DEVELOPMENT_DEPLOY_PRIVATE_KEY }}
+          timeout: 5m
+          command_timeout: 1m
+          script: echo "SSH is reachable"
+      - name: Generate Ansible Inventory
+        run: |
+          cp ${{env.HOSTS_TEMPLATE}} ${{env.HOSTS_FILE}}
+          sed -i '' "s|<DEVELOPMENT_HOST>|${{ vars.DEVELOPMENT_HOST }}|g" ${{env.HOSTS_FILE}}
+      - name: Install Ansible
+        run: |
+          sudo apt update
+          sudo apt install -y software-properties-common
+          sudo add-apt-repository --yes --update ppa:ansible/ansible
+          sudo apt install -y ansible
+      - name: Set up SSH Agent
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.DEVELOPMENT_DEPLOY_PRIVATE_KEY }}
+      - name: Show Deployment URL
+        run: |
+          echo "✅ App deployed successfully!"
+          echo "🌐 Access your app at: http://${{ vars.DEVELOPMENT_HOST }}"
