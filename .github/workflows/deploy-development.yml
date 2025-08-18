@@ -52,5 +52,5 @@ jobs:
             --extra-vars "service_name=${{ github.event.client_payload.service_name }}" \
             --vault-password-file=<(echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}")
         env:
-          ANSIBLE_SSH_USER: ${{ envv.DEPLOY_USER }}
+          ANSIBLE_SSH_USER: ${{ vars.DEPLOY_USER }}
           ANSIBLE_SSH_KEY: ~/.ssh/id_ed25519
