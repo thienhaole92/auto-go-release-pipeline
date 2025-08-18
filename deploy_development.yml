@@ -3,7 +3,7 @@
   tasks:
     - name: Include auto-go-app configuration
       include_vars:
-        file: ./environments/development/auto-go-app.yml
+        file: environments/development/auto-go-app.yml
         name: auto_go_app
 
     - name: Include hello-world configuration

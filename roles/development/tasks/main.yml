@@ -31,6 +31,7 @@
     mode: "0750"
     owner: "{{ deploy_user }}"
     group: "{{ deploy_user }}"
+  when: service_name == "auto-go-app"
 
 - name: Create auto-go-app .env file from template
   ansible.builtin.template:
@@ -40,6 +41,7 @@
     group: "{{ deploy_user }}"
     mode: "0640"
     backup: true
+  when: service_name == "auto-go-app"
 
 - name: Ensure hello-world env directory structure
   ansible.builtin.file:
@@ -48,6 +50,7 @@
     mode: "0750"
     owner: "{{ deploy_user }}"
     group: "{{ deploy_user }}"
+  when: service_name == "hello-world"
 
 - name: Create hello-world .env file from template
   ansible.builtin.template:
@@ -57,3 +60,4 @@
     group: "{{ deploy_user }}"
     mode: "0640"
     backup: true
+  when: service_name == "hello-world"

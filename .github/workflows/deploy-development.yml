@@ -15,6 +15,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Check payload
+        run: |
+          echo "Short SHA: ${{ github.event.client_payload.sha }}"
+          echo "Service Name: ${{ github.event.client_payload.service_name }}"
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Wait for SSH (with retry)
@@ -40,7 +44,11 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.4
         with:
           ssh-private-key: ${{ secrets.DEVELOPMENT_DEPLOY_PRIVATE_KEY }}
+      - name: Run Ansible Playbook
+        run: |
+          cd ansible
+          ansible-playbook -i inventory.ini node_service.yml
       - name: Show Deployment URL
         run: |
-          echo "✅ App deployed successfully!"
-          echo "🌐 Access your app at: http://${{ vars.DEVELOPMENT_HOST }}"
+          echo "App deployed successfully!"
+          echo "Access your app at: http://${{ vars.DEVELOPMENT_HOST }}"

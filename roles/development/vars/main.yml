@@ -2,3 +2,4 @@
 ---
 deploy_user: deployer
 docker_dir: /opt/docker
+service_name: ""

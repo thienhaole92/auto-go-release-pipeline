@@ -1,7 +1,7 @@
 .PHONY: deploy-development
 deploy-development: TEMP_VAULT_PASSWORD_FILE := $(shell mktemp)
-deploy-development: HOSTS_FILE := ./inventories/development/hosts.yml
-deploy-development: HOSTS_TEMPLATE := ./inventories/development/hosts.yml.template
+deploy-development: HOSTS_FILE := inventories/development/hosts.yml
+deploy-development: HOSTS_TEMPLATE := inventories/development/hosts.yml.template
 deploy-development:
 	@# Validate required environment variables
 	@if [ -z "$$DEVELOPMENT_HOST" ]; then \
@@ -22,6 +22,7 @@ deploy-development:
 	ansible-playbook \
 		-i $(HOSTS_FILE) \
 		deploy_development.yml \
+        --extra-vars "service_name=hello-world" \
 		--vault-password-file "$(TEMP_VAULT_PASSWORD_FILE)"
 
 	@# Cleanup
