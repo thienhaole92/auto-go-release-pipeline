@@ -9,8 +9,8 @@ on:
         required: false
         type: string
 env:
-  HOSTS_FILE: ./inventories/development/hosts.yml
-  HOSTS_TEMPLATE: ./inventories/development/hosts.yml.template
+  HOSTS_FILE: inventories/development/hosts.yml
+  HOSTS_TEMPLATE: inventories/development/hosts.yml.template
 jobs:
   deploy:
     runs-on: ubuntu-latest
