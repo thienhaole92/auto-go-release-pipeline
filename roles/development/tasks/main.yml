@@ -61,3 +61,10 @@
     mode: "0640"
     backup: true
   when: service_name == "hello-world"
+
+- name: Force recreate specific Docker Compose service
+  community.docker.docker_compose:
+    project_src: "{{ docker_dir }}"
+    services: ["{{service_name}}"]
+    recreate: always
+    state: present
