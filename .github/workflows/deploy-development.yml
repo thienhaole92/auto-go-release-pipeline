@@ -1,8 +1,8 @@
 name: Deploy Development
 on:
   repository_dispatch:
-    types: [trigger-dev-deploy]  # Custom event name
-  workflow_call:      # Allows calling from other workflows
+    types: [trigger-dev-deploy] # Custom event name
+  workflow_call: # Allows calling from other workflows
     inputs:
       version:
         description: "The version to deploy"
@@ -29,9 +29,7 @@ jobs:
       - name: Generate Ansible Inventory
         run: |
           cp ${{env.HOSTS_TEMPLATE}} ${{env.HOSTS_FILE}}
-          cd inventories/development
-          sed -i "s/<DEVELOPMENT_HOST>/${{ vars.DEVELOPMENT_HOST }}/g" hosts.yml
-          cat hosts.yml
+          sed -i "s/<DEVELOPMENT_HOST>/${{env.DEVELOPMENT_HOST}}/g" ${{env.HOSTS_FILE}}
       - name: Install Ansible
         run: |
           sudo apt update
