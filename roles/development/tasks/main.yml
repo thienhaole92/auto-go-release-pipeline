@@ -62,7 +62,7 @@
     backup: true
   when: service_name == "hello-world"
 
-- name: Force recreate specific service using docker compose
+- name: Force recreate service using docker compose
   ansible.builtin.command: |
     docker compose up -d --force-recreate {{service_name}} || exit 0
   args:
