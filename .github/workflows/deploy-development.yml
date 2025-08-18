@@ -1,6 +1,7 @@
 name: Deploy Development
 on:
-  workflow_dispatch:  # Allows manual triggering
+  repository_dispatch:
+    types: [trigger-dev-deploy]  # Custom event name
   workflow_call:      # Allows calling from other workflows
     inputs:
       version:
