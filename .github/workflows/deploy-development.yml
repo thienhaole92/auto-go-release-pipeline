@@ -30,6 +30,8 @@ jobs:
         run: |
           ls -la
           cp ${{env.HOSTS_TEMPLATE}} ${{env.HOSTS_FILE}}
+          cd inventories/development
+          ls -la
           sed -i '' "s|<DEVELOPMENT_HOST>|${{ vars.DEVELOPMENT_HOST }}|g" ${{env.HOSTS_FILE}}
       - name: Install Ansible
         run: |
