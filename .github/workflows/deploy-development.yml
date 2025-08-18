@@ -15,7 +15,7 @@ jobs:
           echo "Service Name: ${{ github.event.client_payload.service_name }}"
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Wait for SSH (with retry)
+      - name: Update .env on server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ vars.DEVELOPMENT_HOST }}
@@ -23,17 +23,14 @@ jobs:
           key: ${{ secrets.DEVELOPMENT_DEPLOY_PRIVATE_KEY }}
           timeout: 5m
           command_timeout: 1m
-          script: echo "SSH is reachable"
+          script: |
+            TAG="${{ github.event.client_payload.short_sha_tag || 'latest' }}"
+            sed -i "s/^AUTO_GO_APP_VERSION=.*/AUTO_GO_APP_VERSION=$TAG/g" /opt/docker/.env
+            cat /opt/docker/.env
       - name: Generate Ansible Inventory
         run: |
           cp ${{env.HOSTS_TEMPLATE}} ${{env.HOSTS_FILE}}
           sed -i "s/<DEVELOPMENT_HOST>/${{env.DEVELOPMENT_HOST}}/g" ${{env.HOSTS_FILE}}
-      - name: Update .env on server
-        run: |
-          TAG="${{ github.event.client_payload.short_sha_tag || 'latest' }}"
-          sed -i "s/^AUTO_GO_APP_VERSION=.*/AUTO_GO_APP_VERSION=$TAG/g" /opt/docker/.env
-      - name: Show updated .env
-        run: cat /opt/docker/.env
       - name: Install Ansible
         run: |
           sudo apt update
@@ -41,10 +38,6 @@ jobs:
           sudo add-apt-repository --yes --update ppa:ansible/ansible
           sudo apt install -y ansible
           sudo apt install -y python3
-      - name: Set up SSH Agent
-        uses: webfactory/ssh-agent@v0.5.4
-        with:
-          ssh-private-key: ${{ secrets.DEVELOPMENT_DEPLOY_PRIVATE_KEY }}
       - name: Run Ansible Playbook
         run: |
           ansible-playbook -i ${{env.HOSTS_FILE}} \
