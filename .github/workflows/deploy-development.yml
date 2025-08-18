@@ -31,16 +31,16 @@ jobs:
         run: |
           cp ${{env.HOSTS_TEMPLATE}} ${{env.HOSTS_FILE}}
           sed -i "s/<DEVELOPMENT_HOST>/${{env.DEVELOPMENT_HOST}}/g" ${{env.HOSTS_FILE}}
-      - name: Install Ansible
-        run: |
-          sudo apt update
-          sudo apt install -y software-properties-common
-          sudo add-apt-repository --yes --update ppa:ansible/ansible
-          sudo apt install -y ansible
-          sudo apt install -y python3
-      - name: Run Ansible Playbook
-        run: |
-          ansible-playbook -i ${{env.HOSTS_FILE}} \
-            deploy_development.yml \
-            --extra-vars "service_name=${{ github.event.client_payload.service_name }}" \
-            --vault-password-file=<(echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}")
+          cat ${{env.HOSTS_FILE}}
+      # - name: Install Ansible
+      #   run: |
+      #     sudo apt update
+      #     sudo apt install -y software-properties-common
+      #     sudo add-apt-repository --yes --update ppa:ansible/ansible
+      #     sudo apt install -y ansible
+      # - name: Run Ansible Playbook
+      #   run: |
+      #     ansible-playbook -i ${{env.HOSTS_FILE}} \
+      #       deploy_development.yml \
+      #       --extra-vars "service_name=${{ github.event.client_payload.service_name }}" \
+      #       --vault-password-file=<(echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}")

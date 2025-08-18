@@ -62,9 +62,10 @@
     backup: true
   when: service_name == "hello-world"
 
-- name: Force recreate specific Docker Compose service
-  community.docker.docker_compose:
-    project_src: "{{ docker_dir }}"
-    services: ["{{service_name}}"]
-    recreate: always
-    state: present
+- name: Force recreate specific service using docker compose
+  ansible.builtin.command: |
+    docker compose up -d --force-recreate {{service_name}} || exit 0
+  args:
+    chdir: "{{ docker_dir }}"
+  become: true
+
