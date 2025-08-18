@@ -22,7 +22,7 @@ deploy-development:
 	ansible-playbook \
 		-i $(HOSTS_FILE) \
 		deploy_development.yml \
-        --extra-vars "service_name=hello-world" \
+        --extra-vars "service_name=auto-go-app" \
 		--vault-password-file "$(TEMP_VAULT_PASSWORD_FILE)"
 
 	@# Cleanup

@@ -63,9 +63,8 @@
   when: service_name == "hello-world"
 
 - name: Force recreate service using docker compose
-  ansible.builtin.command: |
-    docker compose up -d --force-recreate {{service_name}} || exit 0
+  ansible.builtin.command: docker compose up -d --force-recreate --no-deps {{service_name}}
   args:
     chdir: "{{ docker_dir }}"
-  become: true
-
+  register: cmd_result
+  failed_when: false
