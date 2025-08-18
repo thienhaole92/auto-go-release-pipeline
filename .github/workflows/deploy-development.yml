@@ -21,7 +21,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ vars.DEVELOPMENT_HOST }}
-          username: ubuntu
+          username: ${{ vars.DEPLOY_USER }}
           key: ${{ secrets.DEVELOPMENT_DEPLOY_PRIVATE_KEY }}
           timeout: 5m
           command_timeout: 1m
